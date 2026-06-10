@@ -25,6 +25,7 @@
             <th class="p-2 text-left">Class</th>
             <th class="p-2 text-left">Cat Score</th>
             <th class="p-2 text-left">Exam Score</th>
+            <!-- <th class="p-2 text-left">Grade</th> -->
             <th class="p-2 text-left">Actions</th>
         </tr>
     </thead>
@@ -41,6 +42,7 @@
             <td class="p-2">{{ assessment.student.class_stream }}</td>
             <td class="p-2">{{ assessment.cat_score }}</td>
             <td class="p-2">{{ assessment.exam_score }}</td>
+            <!-- <td class="p-2">{{ assessment.grade.grade }}</td> -->
 
             <td class="p-2 space-x-2">
                 <a href="{% url 'update-assessment' assessment.id %}"

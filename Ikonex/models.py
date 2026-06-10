@@ -43,6 +43,7 @@ class GradeScale(models.Model):
 class Assessment(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    # grade = models.ForeignKey(GradeScale, on_delete=models.CASCADE)
     cat_score = models.FloatField(default=0)
     exam_score = models.FloatField(default=0)
 
