@@ -1,0 +1,44 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Stream Form{% endblock %}
+
+{% block content %}
+
+<div class="bg-white p-6 rounded shadow max-w-lg mx-auto">
+
+    <h2 class="text-xl font-bold mb-4">
+        {% if object %}Edit Stream{% else %}Add Stream{% endif %}
+    </h2>
+
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        {% for field in form %}
+    <div>
+        <label class="block font-medium mb-1">
+            {{ field.label }}
+        </label>
+
+        <input
+            type="{{ field.field.widget.input_type }}"
+            name="{{ field.name }}"
+            value="{{ field.value|default:'' }}"
+            class="w-full border border-black rounded px-3 py-2"
+        >
+
+        {% if field.errors %}
+            <p class="text-red-500 text-sm">{{ field.errors }}</p>
+        {% endif %}
+    </div>
+{% endfor %}
+
+        <button class="bg-blue-600 text-white px-4 py-2 rounded">
+            Save
+        </button>
+    </form>
+
+</div>
+
+{% endblock %}
+
+
+

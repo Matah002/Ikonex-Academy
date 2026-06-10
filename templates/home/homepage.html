@@ -1,0 +1,307 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+
+<div class="bg-gradient-to-r from-blue-700 to-indigo-700 rounded-2xl p-6 text-white shadow-lg">
+
+    <div class="flex justify-between items-center">
+
+        <div>
+            <h1 class="text-3xl font-bold">
+                School Performance Dashboard
+            </h1>
+
+            <p class="mt-2 text-blue-100">
+                Monitor student performance, rankings, classes and reports.
+            </p>
+        </div>
+
+        <div class="hidden md:block text-right">
+            <p class="text-sm text-blue-100">
+                Academic Term
+            </p>
+
+            <h2 class="text-xl font-semibold">
+                Term 2 - 2026
+            </h2>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mt-6">
+
+    
+    <div class="bg-white rounded-xl shadow p-5">
+
+        <div class="flex justify-between">
+
+            <div>
+                <p class="text-gray-500">
+                    Total Students
+                </p>
+
+                <h2 class="text-4xl font-bold mt-2">
+                    {{ total_students }}
+                </h2>
+            </div>
+
+            <div class="text-4xl">
+                👨‍🎓
+            </div>
+
+        </div>
+
+    </div>
+
+    
+    <div class="bg-white rounded-xl shadow p-5">
+
+        <div class="flex justify-between">
+
+            <div>
+                <p class="text-gray-500">
+                    Total Classes
+                </p>
+
+                <h2 class="text-4xl font-bold mt-2">
+                    {{ total_classes }}
+                </h2>
+            </div>
+
+            <div class="text-4xl">
+                🏫
+            </div>
+
+        </div>
+
+    </div>
+
+    
+    <div class="bg-white rounded-xl shadow p-5">
+
+        <div class="flex justify-between">
+
+            <div>
+                <p class="text-gray-500">
+                    Subjects
+                </p>
+
+                <h2 class="text-4xl font-bold mt-2">
+                    {{ total_subjects }}
+                </h2>
+            </div>
+
+            <div class="text-4xl">
+                📚
+            </div>
+
+        </div>
+
+    </div>
+
+    
+    <div class="bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl shadow p-5">
+
+        <p class="text-green-100">
+            Overall Average
+        </p>
+
+        <h2 class="text-4xl font-bold mt-2">
+            {{ overall_average }}%
+        </h2>
+
+    </div>
+
+</div>
+
+
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-6 mt-6">
+
+   
+    <div class="xl:col-span-2 bg-white rounded-xl shadow">
+
+        <div class="p-5 border-b">
+
+            <h2 class="text-xl font-bold">
+                🏆 Top Performing Students
+            </h2>
+
+        </div>
+
+        <div class="overflow-x-auto">
+
+            <table class="w-full">
+
+                <thead class="bg-gray-50">
+
+                    <tr>
+                        <th class="p-4 text-left">Rank</th>
+                        <th class="p-4 text-left">Admission No</th>
+                        <th class="p-4 text-left">Student</th>
+                        <th class="p-4 text-left">Class</th>
+                        <th class="p-4 text-left">Average</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for item in rankings %}
+
+                    <tr class="border-b hover:bg-gray-50">
+
+                        <td class="p-4">
+
+                            {% if forloop.counter == 1 %}
+                                🥇
+                            {% elif forloop.counter == 2 %}
+                                🥈
+                            {% elif forloop.counter == 3 %}
+                                🥉
+                            {% else %}
+                                #{{ forloop.counter }}
+                            {% endif %}
+
+                        </td>
+
+                        <td class="p-4">
+                            {{ item.student.admission_number }}
+                        </td>
+
+                        <td class="p-4 font-medium">
+                            {{ item.student.surname }}
+                            {{ item.student.first_name }}
+                        </td>
+
+                        <td class="p-4">
+                            {{ item.student.class_stream }}
+                        </td>
+
+                        <td class="p-4 font-bold text-green-600">
+                            {{ item.average }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+    
+    <div class="bg-white rounded-xl shadow p-5">
+
+        <h2 class="text-xl font-bold mb-4">
+            ⚡ Quick Actions
+        </h2>
+
+        <div class="space-y-3">
+
+            <a href="{% url 'student-create' %}"
+               class="block bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-lg text-center">
+                ➕ Register Student
+            </a>
+
+            <!-- <a href="{}"
+               class="block bg-green-600 hover:bg-green-700 text-white p-3 rounded-lg text-center">
+                📝 Record Assessment
+            </a> -->
+
+            {% for class_stream in classes %}
+
+            <a href="{% url 'class-performance' class_stream.id %}"
+               class="block bg-purple-600 hover:bg-purple-700 text-white p-3 rounded-lg text-center">
+                📊 {{ class_stream }}
+            </a> 
+
+            {% endfor %}
+
+            <a href="{% url 'student-list' %}"
+               class="block bg-orange-600 hover:bg-orange-700 text-white p-3 rounded-lg text-center">
+                👨‍🎓 Manage Students
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="mt-6 bg-white rounded-xl shadow">
+
+    <div class="p-5 border-b">
+
+        <h2 class="text-xl font-bold">
+            📈 Class Performance Overview
+        </h2>
+
+    </div>
+
+    <div class="overflow-x-auto">
+
+        <table class="w-full">
+
+            <thead class="bg-gray-50">
+
+                <tr>
+                    <th class="p-4 text-left">Class</th>
+                    <th class="p-4 text-left">Students</th>
+                    <th class="p-4 text-left">Average Score</th>
+                    <th class="p-4 text-left">Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for class_data in class_performance %}
+
+                <tr class="border-b">
+
+                    <td class="p-4 font-medium">
+                        {{ class_data.class_stream }}
+                    </td>
+
+                    <td class="p-4">
+                        {{ class_data.student_count }}
+                    </td>
+
+                    <td class="p-4 font-bold text-blue-600">
+                        {{ class_data.average }}
+                    </td>
+
+                    <td class="p-4">
+
+                        <a href="{% url 'class-performance' class_data.class_stream.id %}"
+                           class="bg-blue-600 text-white px-3 py-2 rounded">
+                            View Results
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}
+```

@@ -1,0 +1,49 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Class Students{% endblock %}
+
+{% block content %}
+
+<div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-bold"> CLass {{ class_stream.name }} Students</h2>
+
+    <a href="{% url 'student-create' %}"
+       class="bg-green-600 text-white px-4 py-2 rounded">
+        + Add Student
+    </a>
+</div>
+
+<table class="w-full bg-white shadow rounded">
+    <thead class="bg-gray-200">
+        <tr>
+            <th class="p-2 text-left">SurName</th>
+            <th class="p-2 text-left">FirstName</th>
+            <th class="p-2 text-left">LatName</th>
+            <th class="p-2 text-left">admission_number</th>
+            <th class="p-2 text-left">Class</th>
+            <th class="p-2 text-left">Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for student in students %}
+        <tr class="border-t">
+            <td class="p-2">{{ student.surname }}</td>
+            <td class="p-2">{{ student.first_name }}</td>
+            <td class="p-2">{{ student.last_name }}</td>
+            <td class="p-2">{{ student.admission_number }}</td>
+            <td class="p-2">{{ student.class_stream }}</td>
+
+            <td class="p-2 space-x-2">
+                <a href="{% url 'update-student' student.id %}"
+                   class="text-blue-600">Edit</a>
+
+                <a href="{% url 'delete-student' student.id %}"
+                   class="text-red-600">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

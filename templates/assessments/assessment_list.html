@@ -1,0 +1,58 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Assessments{% endblock %}
+
+{% block content %}
+
+<div class="flex justify-between items-center mb-4">
+    <h2 class="text-2xl font-bold">Assessments</h2>
+
+    <a href="{% url 'assessment-create' %}"
+       class="bg-green-600 text-white px-4 py-2 rounded">
+        + Add Assessment
+    </a>
+</div>
+
+<table class="w-full bg-white shadow rounded">
+    <thead class="bg-gray-200">
+        <tr>
+            <th class="p-2 text-left">Subject</th>
+            <th class="p-2 text-left">Subject Code</th>
+            <th class="p-2 text-left">SurName</th>
+            <th class="p-2 text-left">FirstName</th>
+            <th class="p-2 text-left">LastName</th>
+            <th class="p-2 text-left">admission_number</th>
+            <th class="p-2 text-left">Class</th>
+            <th class="p-2 text-left">Cat Score</th>
+            <th class="p-2 text-left">Exam Score</th>
+            <th class="p-2 text-left">Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for assessment in object_list %}
+        <tr class="border-t">
+            <td class="p-2">{{ assessment.subject.name }}</td>
+            <td class="p-2">{{ assessment.subject.subject_code }}</td>
+            <td class="p-2">{{ assessment.student.surname }}</td>
+            <td class="p-2">{{ assessment.student.first_name }}</td>
+            <td class="p-2">{{ assessment.student.last_name }}</td>
+            <td class="p-2">{{ assessment.student.admission_number }}</td>
+            <td class="p-2">{{ assessment.student.class_stream }}</td>
+            <td class="p-2">{{ assessment.cat_score }}</td>
+            <td class="p-2">{{ assessment.exam_score }}</td>
+
+            <td class="p-2 space-x-2">
+                <a href="{% url 'update-assessment' assessment.id %}"
+                   class="text-blue-600">Edit</a>
+
+                <a href="{% url 'delete-assessment' assessment.id %}"
+                   class="text-red-600">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
+
