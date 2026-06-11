@@ -10,15 +10,21 @@
 
     <a href="{% url 'stream-create' %}"
        class="bg-green-600 text-white px-4 py-2 rounded">
-        + Add Streams
+        + Add Class
+    </a>
+
+    <a href="{% url 'class-subject-create' %}"
+       class="bg-green-600 text-white px-4 py-2 rounded">
+        + Add Subject
     </a>
 </div>
 
 <table class="w-full bg-white shadow rounded">
     <thead class="bg-gray-200">
         <tr>
-            <th class="p-2 text-left">Stream Name</th>
-            <th class="p-2 text-left">Stream Students</th>
+            <th class="p-2 text-left">Class Name</th>
+            <th class="p-2 text-left"> Class Students</th>
+            <th class="p-2 text-left"> Class Subjects</th>
             <th class="p-2 text-left">Actions</th>
             
         </tr>
@@ -28,7 +34,8 @@
         {% for stream in object_list %}
         <tr class="border-t">
             <td class="p-2"><a href="{% url 'class-performance' stream.id %}" >{{ stream.name }}</a> </td>
-            <td class="p-2 text-xl"><a href="{% url 'class-students' stream.id %}" >↗️</a> </td>
+            <td class="p-2 text-xl"><a href="{% url 'class-students' stream.id %}">🏹</a> </td>
+            <td class="p-2 text-xl"><a href="{% url 'class-subjects' stream.id %}">↗️</a> </td>
             
 
             <td class="p-2 space-x-2">

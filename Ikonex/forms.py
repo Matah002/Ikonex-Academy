@@ -1,9 +1,14 @@
 from django import forms
-from .models import Student, Subject, Assessment, ClassStream
+from .models import Student, Subject, Assessment, ClassStream, ClassSubject
 
 class StreamForm(forms.ModelForm):
     class Meta:
         model = ClassStream
+        fields = "__all__"
+
+class ClassSubjectForm(forms.ModelForm):
+    class Meta:
+        model = ClassSubject
         fields = "__all__"
 
 class StudentForm(forms.ModelForm):

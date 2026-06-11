@@ -1,8 +1,8 @@
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404
-from .models import ClassStream, Assessment, GradeScale, Student, Subject
+from .models import ClassStream, Assessment, GradeScale, Student, Subject, ClassSubject
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from .forms import StudentForm, StreamForm, AssessmentForm
+from .forms import StudentForm, StreamForm, AssessmentForm, ClassSubjectForm, SubjectForm
 from .utils import rank_students, average_score
 
 def dashboard(request):
@@ -86,6 +86,15 @@ def class_students(request, class_id):
 
     return render(request, 'students/class_students.html', {
         'students': students,
+        'total_students': total_students,
+    })
+
+def class_subjects(request, class_id):
+    class_stream = get_object_or_404(ClassStream, id=class_id)
+    classsubjects = ClassSubject.objects.filter(class_stream = class_stream)
+
+    return render(request, "subjects/class_subjects.html", {
+        "classsubjects":classsubjects
     })
 
 
@@ -105,11 +114,34 @@ class SubjectListView(ListView):
     model = Subject
     template_name = "subjects/subject_list.html"
 
+class ClassSubjectsListView(ListView):
+    model = ClassSubject
+    template_name = "subjects/subject_list.html"
+    context_object_name = "classsubjects"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['subjects'] = Subject.objects.all()
+        return context
+
 class StudentCreateView(CreateView):
     model = Student
     form_class = StudentForm
     template_name =  "students/student_form.html"
     success_url = reverse_lazy("student-list")
+
+class SubjectCreateView(CreateView):
+    model = Subject
+    form_class = SubjectForm
+    template_name = "subjects/create_subject_form.html"
+    success_url = reverse_lazy('subject-list')
+
+class ClassSubjectsCreateView(CreateView):
+    model = ClassSubject
+    form_class = ClassSubjectForm
+    template_name = "subjects/class_subject_form.html"
+    success_url = reverse_lazy('subject-list')
+
 
 class AssessmentCreateView(CreateView):
     model = Assessment
@@ -129,6 +161,18 @@ class StudentUpdateView(UpdateView):
     template_name =  "students/student_form.html"
     success_url = reverse_lazy("student-list")
 
+class SubjectUpdateView(UpdateView):
+    model = Subject
+    form_class = SubjectForm
+    template_name = "subjects/create_subject_form.html"
+    success_url = reverse_lazy('subject-list')
+
+class ClassSubjectsUpdateView(UpdateView):
+    model = ClassSubject
+    form_class = ClassSubjectForm
+    template_name = "subjects/class_subject_form.html"
+    success_url = reverse_lazy('subject-list')
+
 class AssessmentUpdateView(UpdateView):
     model = Assessment
     form_class = AssessmentForm
@@ -146,13 +190,22 @@ class StudentDeleteView(DeleteView):
     template_name = "students/student_confirm_delete.html"
     success_url = reverse_lazy("student-list")
 
-class AssessmentDeleteView(CreateView):
+class SubjectDeleteView(DeleteView):
+    model = Subject
+    template_name = "subjects/confirm_subject_delete.html"
+    success_url = reverse_lazy('subject-list')
+
+class ClassSubjectsDeleteView(DeleteView):
+    model = ClassSubject
+    template_name = "subjects/classsubject_confirm_delete.html"
+    success_url = reverse_lazy('subject-list')
+
+class AssessmentDeleteView(DeleteView):
     model = Assessment
-    form_class = AssessmentForm
     template_name = "assessments/assessment_confirm_delete.html"
     success_url = reverse_lazy("assessment-list")
 
-class StreamDeleteteView(CreateView):
+class StreamDeleteteView(DeleteView):
     model = ClassStream
     template_name = "streams/stream_confirm_delete.html"
     success_url = reverse_lazy("stream-list")
